@@ -105,7 +105,7 @@ sub send {
   my $json   = $self->ua->post($url, {
     name   => $self->user,
     pass   => $self->password,
-    group1 => 'BTC'
+    group1 => 'BTC',
     btca   => $params{bitcoin_address},
     amount => $params{amount}
   })->content();
