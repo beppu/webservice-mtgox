@@ -1,4 +1,5 @@
 package WebService::MtGox;
+use 5.008;
 use Moo;
 use Ouch;
 use JSON;
@@ -112,8 +113,8 @@ sub send {
   decode_json($json);
 }
 
-
 1;
+
 __END__
 
 =head1 NAME
