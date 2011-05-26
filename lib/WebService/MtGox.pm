@@ -43,7 +43,7 @@ sub get_trades {
 
 sub get_balance {
   my $self = shift;
-  my $url  = $self->base_url . sprintf("/getFunds.php");
+  my $url  = $self->base_url . "/getFunds.php";
   my $json = $self->ua->post($url, { name => $self->user, pass => $self->password })->content();
   decode_json($json);
 }
@@ -51,7 +51,7 @@ sub get_balance {
 sub buy {
   my $self   = shift;
   my %params = @_;
-  my $url    = $self->base_url . sprintf("/buyBTC.php");
+  my $url    = $self->base_url . "/buyBTC.php";
   my $json = $self->ua->post($url, {
     name   => $self->user,
     pass   => $self->password,
@@ -64,7 +64,7 @@ sub buy {
 sub sell {
   my $self   = shift;
   my %params = @_;
-  my $url    = $self->base_url . sprintf("/sellBTC.php");
+  my $url    = $self->base_url . "/sellBTC.php";
   my $json   = $self->ua->post($url, {
     name   => $self->user,
     pass   => $self->password,
@@ -77,7 +77,7 @@ sub sell {
 sub list {
   my $self   = shift;
   my %params = @_;
-  my $url    = $self->base_url . sprintf("/getOrders.php");
+  my $url    = $self->base_url . "/getOrders.php";
   my $json   = $self->ua->post($url, {
     name => $self->user,
     pass => $self->password,
@@ -88,7 +88,7 @@ sub list {
 sub cancel {
   my $self   = shift;
   my %params = @_;
-  my $url    = $self->base_url . sprintf("/cancelOrder.php");
+  my $url    = $self->base_url . "/cancelOrder.php";
   my $json   = $self->ua->post($url, {
     name => $self->user,
     pass => $self->password,
@@ -122,23 +122,28 @@ WebService::MtGox - access to mtgox.com's bitcoin trading API
 
 =head1 SYNOPSIS
 
-Creating the $mtgox client
+Creating the client
 
   use WebService::MtGox;
-  my $mtgox = WebService::MtGox->new(
+  my $m = WebService::MtGox->new(
     user     => 'you',
     password => 'secret',
   );
 
 Getting Trade Data
 
-  my $ticker = $mtgox->get_ticker;
+  my $ticker = $m->get_ticker;
+  my $depth  = $m->get_depth;
 
 Placing Buy and Sell Orders
 
-  my $r1 = $mtgox->buy(amount => 24, price => 7.77);
-  my $r2 = $mtgox->sell(amount => 10, price => 8.12);
+  my $r1 = $m->buy(amount => 24, price => 7.77);
+  my $r2 = $m->sell(amount => 10, price => 8.12);
 
+Make it AnyEvent+Coro-friendly
+
+  use WebService::MtGox;
+  use LWP::Protocol::Coro::http;
 
 =head1 DESCRIPTION
 
@@ -146,31 +151,52 @@ WebService::MtGox gives you access to MtGox's bitcoin trading API.
 With this module, you can get current market data and initiate your
 buy and sell orders.
 
+It's great for writing bitcoin trading bots.
+
 =head1 API
 
 =head2  Market Information
 
-=head3    $mtgox->get_ticker
+=head3    $m->get_ticker
 
-=head3    $mtgox->get_depth
+Get the daily lows and highs along with the current price for btc.
 
-=head3    $mtgox->get_trades
+=head3    $m->get_depth
+
+Get a list of buyers and sellers.
+
+=head3    $m->get_trades
+
+Get a list of recent trades.
 
 =head2  Orders
 
-=head3    $mtgox->get_balance
+=head3    $m->get_balance
 
-=head3    $mtgox->buy
+Get your balance
 
-=head3    $mtgox->sell
+=head3    $m->buy(amount => $n, price => $p)
 
-=head3    $mtgox->list
+Create a buy order.
 
-=head3    $mtgox->cancel
+=head3    $m->sell(amount => $n, price => $p)
+
+Create a sell order.
+
+=head3    $m->list
+
+List all of your open orders.
+
+=head3    $m->cancel(oid => $oid, type => $t)
+
+Cancel an order based on oid and type.
+Type may be C<1> for buy or C<2> for sell.
 
 =head2  Sending Bitcoins
 
-=head3    $mtgox->send
+=head3    $m->send(bitcoin_address => $addr, amount => $n)
+
+Use this method to withdraw money from mtgox.
 
 =head1 AUTHOR
 
