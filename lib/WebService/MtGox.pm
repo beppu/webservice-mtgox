@@ -5,7 +5,7 @@ use Ouch;
 use JSON;
 use LWP::UserAgent;
 
-our $VERSION  = '0.01';
+our $VERSION  = '0.02';
 our $BASE_URL = 'https://mtgox.com/code';
 
 has user     => (is => 'ro');
