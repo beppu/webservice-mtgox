@@ -6,7 +6,7 @@ use JSON;
 use LWP::UserAgent;
 
 our $VERSION  = '0.01';
-our $BASE_URL = 'http://mtgox.com/code';
+our $BASE_URL = 'https://mtgox.com/code';
 
 has user     => (is => 'ro');
 has password => (is => 'ro');
@@ -102,7 +102,7 @@ sub cancel {
 sub send {
   my $self   = shift;
   my %params = @_;
-  my $url    = $self->base_url . "/withdraw.php?name=%s&pass=%s&group1=BTC&btca=&amount=%s";
+  my $url    = $self->base_url . "/withdraw.php";
   my $json   = $self->ua->post($url, {
     name   => $self->user,
     pass   => $self->password,
@@ -156,7 +156,18 @@ It's great for writing bitcoin trading bots.
 
 =head1 API
 
+=head2  Creation
+
+=head3    WebService::MtGox->new(user => $user, password => $password)
+
+This constructs a WebService::MtGox object.  If C<user> and C<password>
+are not provided (or are invalid), you will only be able to get market
+information from the API.  You will not be able to buy or sell bitcoins
+without a valid MtGox username and password.
+
 =head2  Market Information
+
+The following methods do not require authentication.
 
 =head3    $m->get_ticker
 
@@ -170,7 +181,9 @@ Get a list of buyers and sellers.
 
 Get a list of recent trades.
 
-=head2  Orders
+=head2  Buying and Selling
+
+The following methods require authentication.
 
 =head3    $m->get_balance
 
@@ -192,8 +205,6 @@ List all of your open orders.
 
 Cancel an order based on oid and type.
 Type may be C<1> for buy or C<2> for sell.
-
-=head2  Sending Bitcoins
 
 =head3    $m->send(bitcoin_address => $addr, amount => $n)
 
