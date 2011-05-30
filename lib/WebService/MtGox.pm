@@ -5,7 +5,7 @@ use Ouch;
 use JSON;
 use LWP::UserAgent;
 
-our $VERSION  = '0.02';
+our $VERSION  = '0.03';
 our $BASE_URL = 'https://mtgox.com/code';
 
 has user     => (is => 'ro');
@@ -209,6 +209,9 @@ Type may be C<1> for buy or C<2> for sell.
 =head3    $m->send(bitcoin_address => $addr, amount => $n)
 
 Use this method to withdraw money from mtgox.
+
+B<NOTICE>:  As of 2011-05-30, this API function has not yet been implemented at
+mtgox.com.
 
 =head1 SEE ALSO
 

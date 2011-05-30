@@ -1,5 +1,9 @@
 Revision history for Perl extension WebService::MtGox
 
+0.03 Mon May 30 03:42:34 PDT 2011
+  - minor doc updates
+  - added parent to prerequisites
+
 0.02 Fri May 27 01:20:18 PDT 2011
   - fixed typos
   - added docs
