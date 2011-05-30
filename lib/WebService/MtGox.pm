@@ -171,11 +171,11 @@ The following methods do not require authentication.
 
 =head3    $m->get_ticker
 
-Get the daily lows and highs along with the current price for btc.
+Get the daily lows and highs along with the current price in USD for BTC.
 
 =head3    $m->get_depth
 
-Get a list of buyers and sellers.
+Get a list of the current buy and sell orders.
 
 =head3    $m->get_trades
 
@@ -210,10 +210,6 @@ Type may be C<1> for buy or C<2> for sell.
 
 Use this method to withdraw money from mtgox.
 
-=head1 AUTHOR
-
-John BEPPU E<lt>beppu {at} cpan.orgE<gt>
-
 =head1 SEE ALSO
 
 =head2  API Documentation
@@ -222,7 +218,15 @@ L<https://mtgox.com/support/tradeAPI>
 
 =head2  Other Bitcoin-related Modules
 
-L<Finance::Bitcoin>
+L<Catalyst::Model::Bitcoin>,
+L<Finance::Bitcoin>,
+L<Finance::MtGox>
+
+(Had I known about Finance::MtGox, I wouldn't have made this module.)
+
+=head1 AUTHOR
+
+John BEPPU E<lt>beppu {at} cpan.orgE<gt>
 
 =head1 LICENSE
 
