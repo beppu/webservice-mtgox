@@ -1,5 +1,8 @@
 Revision history for Perl extension WebService::MtGox
 
+0.04 Tue May 31 13:15:31 PDT 2011
+  - added LWP::Protocol::https to dependencies
+
 0.03 Mon May 30 03:42:34 PDT 2011
   - minor doc updates
   - added parent to prerequisites
