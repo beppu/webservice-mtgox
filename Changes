@@ -1,5 +1,8 @@
 Revision history for Perl extension WebService::MtGox
 
+0.05 Thu Jun  2 22:04:36 PDT 2011
+  - added a command line client:  bin/mg
+
 0.04 Tue May 31 13:15:31 PDT 2011
   - added LWP::Protocol::https to dependencies
 

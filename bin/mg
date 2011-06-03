@@ -113,8 +113,9 @@ sub view {
 }
 
 my $command = shift;
+
 try {
-  if ($command) {
+  if ($command && exists $actions{$command}) {
     view( $actions{$command}->() );
   } else {
     require Pod::Usage;

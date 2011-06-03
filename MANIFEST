@@ -1,3 +1,4 @@
+bin/mg
 Changes
 inc/Module/Install.pm
 inc/Module/Install/AuthorTests.pm
