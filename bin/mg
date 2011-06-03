@@ -1,0 +1,232 @@
+#!/usr/bin/env perl
+use common::sense;
+use WebService::MtGox;
+use Data::Dump 'pp';
+use Ouch;
+use Try::Tiny;
+use Getopt::Long;
+
+my $user;
+my $password;
+
+if (not -e "$ENV{HOME}/.mgrc") {
+print qq{Config file not found.
+
+To get started, you need to add your mtgox.com login credentials
+to a file that only you can read like this:
+
+  echo username >  ~/.mgrc
+  echo password >> ~/.mgrc
+  chmod 0400 ~/.mgrc
+
+Of course, you should replace username and password with your
+own credentials.
+
+To get started, run:
+
+  $0 help
+
+};
+exit 1;
+} else {
+  open my $fh, '<', "$ENV{HOME}/.mgrc" or die $!;
+  ($user, $password) = map { chomp; $_ } <$fh>;
+}
+
+my $m = WebService::MtGox->new(
+  user     => $user,
+  password => $password,
+);
+
+my %actions; %actions = (
+  ticker => sub {
+    my $r = $m->get_ticker;
+    say pp($r);
+  },
+  depth => sub {
+    my $r = $m->get_depth;
+    my $bids = $r->{bids};
+    my $asks = $r->{asks};
+    for (reverse @$bids) {
+      say sprintf('%-20.8f%20.8f', @$_);
+    }
+    say "-" x 40;
+    for (@$asks) {
+      say sprintf('%-20.8f%20.8f', @$_);
+    }
+  },
+  trades => sub {
+    my $r = $m->get_trades;
+    say pp($r);
+  },
+  balance => sub {
+    my $r = $m->get_balance;
+    say pp($r);
+  }, 
+  buy => sub {
+    GetOptions(
+      \%_,
+      'amount|a=f',
+      'price|p=f',
+    );
+    ouch("MissingParameter", "--amount is required") if not $_{amount};
+    ouch("MissingParameter", "--price is required")  if not $_{price};
+    my $r = $m->buy(amount => $_{amount}, price => $_{price});
+    say pp($r);
+  },
+  sell => sub {
+    GetOptions(
+      \%_,
+      'amount|a=f',
+      'price|p=f',
+    );
+    ouch("MissingParameter", "--amount is required") if not $_{amount};
+    ouch("MissingParameter", "--price is required")  if not $_{price};
+    my $r = $m->sell(amount => $_{amount}, price => $_{price});
+    say pp($r);
+  },
+  list => sub {
+    my $r = $m->list;
+    say pp($r);
+  },
+  cancel => sub {
+    GetOptions(
+      \%_,
+      'oid|o=n',
+      'type|t=s',
+    );
+    ouch("MissingParameter", "--oid is required")  if not ($_{oid});
+    ouch("MissingParameter", "--type is required") if not ($_{type});
+    my $r = $m->cancel(oid => $_{oid}, type => $_{type});
+    say pp($r);
+  },
+  send => sub {
+  },
+  help => sub {
+    require Pod::Usage;
+    Pod::Usage->import;
+    pod2usage(-verbose => 2);
+  },
+);
+
+sub view {
+}
+
+my $command = shift;
+try {
+  if ($command) {
+    view( $actions{$command}->() );
+  } else {
+    require Pod::Usage;
+    Pod::Usage->import;
+    pod2usage(-verbose => 1);
+  }
+}
+catch {
+  say "$_";
+  exit 1;
+};
+exit 0;
+
+__END__
+
+=head1 NAME
+
+mg - a command line client for MtGox
+
+=head1 SYNOPSIS
+
+  mg <COMMAND> [OPTION]...
+
+=head1 OPTIONS
+
+=over 2
+
+=item B<ticker>
+
+Get ticker.
+
+=item B<depth>
+
+Get trading depth.
+
+=item B<trades>
+
+Get recent trades.
+
+=item B<balance>
+
+Get your balance.
+
+=item B<buy>
+
+Buy some bitcoins.
+
+=over   4
+
+=item   --amount=NUMBER
+
+=item   --price=NUMBER
+
+=back
+
+=item B<sell>
+
+Sell some bitcoins.
+
+=over   4
+
+=item   --amount=NUMBER
+
+=item   --price=NUMBER
+
+=back
+
+=item B<list>
+
+List your orders.
+
+=item B<cancel>
+
+Cancel an order.
+
+=over   4
+
+=item   --oid=ID
+
+The order id.
+
+=item   --type=NUMBER
+
+The type may be C<1> for buy or C<2> for sell.
+
+=back
+
+=item B<send>
+
+Send bitcoins from your MtGox account to a bitcoin address.
+
+=over   4
+
+=item   --amount=NUMBER
+
+=item   --address=BITCOIN_ADDRESS
+
+=back
+
+=back
+
+=head1 SEE ALSO
+
+L<WebService::MtGox>, L<Finance::Bitcoin>
+
+=head1 AUTHOR
+
+John BEPPU E<lt>beppu (at) cpan.orgE<gt>
+
+=head1 LICENSE
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=cut

@@ -225,6 +225,12 @@ L<Catalyst::Model::Bitcoin>,
 L<Finance::Bitcoin>,
 L<Finance::MtGox>
 
+=head2 Command Line Client
+
+Buy and sell bitcoins on mtgox.com from the command line.
+
+L<mg>
+
 (Had I known about Finance::MtGox, I wouldn't have made this module.)
 
 =head1 AUTHOR

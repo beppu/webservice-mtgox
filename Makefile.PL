@@ -8,9 +8,14 @@ requires 'parent'               => 0; # for Ouch
 requires 'JSON'                 => 0;
 requires 'LWP::UserAgent'       => 0;
 requires 'LWP::Protocol::https' => 0;
+requires 'Try::Tiny'            => 0;
+requires 'Data::Dump'           => 0;
+requires 'Getopt::Long'         => 0;
 
 tests 't/*.t';
 author_tests 'xt';
+
+install_script 'bin/mg';
 
 test_requires 'Test::More';
 auto_set_repository;
