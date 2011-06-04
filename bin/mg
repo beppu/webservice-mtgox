@@ -162,13 +162,13 @@ my %actions; %actions = (
 );
 
 # aliases
-$actions{ls} = $actions{list}
+$actions{ls} = $actions{list};
 
 my $command = shift;
 
 try {
   if ($command && exists $actions{$command}) {
-    view( $actions{$command}->() );
+    $actions{$command}->();
   } else {
     require Pod::Usage;
     Pod::Usage->import;
