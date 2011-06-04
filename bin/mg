@@ -39,10 +39,12 @@ my $m = WebService::MtGox->new(
 );
 
 my %actions; %actions = (
+
   ticker => sub {
     my $r = $m->get_ticker;
     say pp($r);
   },
+
   depth => sub {
     my $r = $m->get_depth;
     my $bids = $r->{bids};
@@ -55,14 +57,17 @@ my %actions; %actions = (
       say sprintf('%-20.8f%20.8f', @$_);
     }
   },
+
   trades => sub {
     my $r = $m->get_trades;
     say pp($r);
   },
+
   balance => sub {
     my $r = $m->get_balance;
     say pp($r);
   }, 
+
   buy => sub {
     GetOptions(
       \%_,
@@ -74,6 +79,7 @@ my %actions; %actions = (
     my $r = $m->buy(amount => $_{amount}, price => $_{price});
     say pp($r);
   },
+  
   sell => sub {
     GetOptions(
       \%_,
@@ -85,10 +91,12 @@ my %actions; %actions = (
     my $r = $m->sell(amount => $_{amount}, price => $_{price});
     say pp($r);
   },
+
   list => sub {
     my $r = $m->list;
     say pp($r);
   },
+  
   cancel => sub {
     GetOptions(
       \%_,
@@ -100,8 +108,52 @@ my %actions; %actions = (
     my $r = $m->cancel(oid => $_{oid}, type => $_{type});
     say pp($r);
   },
+  
   send => sub {
+    GetOptions(
+      \%_,
+      'address|addr|b=s',
+      'amount=f',
+    );
+    ouch("MissingParameter", "--address is required") if not($_{address});
+    ouch("MissingParameter", "--amount is required")  if not($_{amount});
+    my $r = $m->send(bitcoin_address => $_{address}, amount => $_{amount});
+    say pp($r);
   },
+
+  # value of assets denominated in USD
+  usd => sub {
+    my $ticker  = $m->get_ticker->{ticker};
+    my $balance = $m->get_balance;
+    my $rate = $ticker->{last};
+    my $btc;
+    my $usd;
+    if (@ARGV) {
+      $btc = shift(@ARGV);
+      $usd = ($btc * $rate);
+    } else {
+      $btc = $balance->{btcs};
+      $usd = ($btc * $rate) + $balance->{usd};
+    }
+    printf("\$%.2f\n", $usd);
+  },
+
+  # value of assets denominated in BTC
+  btc => sub {
+    my $ticker  = $m->get_ticker->{ticker};
+    my $balance = $m->get_balance;
+    my $rate = $ticker->{last};
+    my $btc;
+    my $usd;
+    if (@ARGV) {
+      $usd = shift(@ARGV);
+      $btc = ($usd / $rate);
+    } else {
+      $btc = $balance->{btcs} + ($balance->{usd} / $rate);
+    }
+    printf("\x{0E3F}%.2f\n", $btc);
+  },
+
   help => sub {
     require Pod::Usage;
     Pod::Usage->import;
@@ -214,6 +266,24 @@ Send bitcoins from your MtGox account to a bitcoin address.
 =item   --address=BITCOIN_ADDRESS
 
 =back
+
+=item B<usd> [BITCOINS]
+
+Display the total value of your balance in US Dollars.
+You can also use this to find the value of an arbitrary amount
+of bitcoins in US Dollars.
+
+  # How much is 1000 btc worth in US Dollars?
+  mg usd 1000
+
+=item B<btc> [USD]
+
+Display the total value of your balance in bitcoins.
+You can also use this to find the value of an arbitrary amount
+of US Dollars in bitcoins.
+
+  # How much is $400 worth in bitcoins?
+  mg btc 400
 
 =back
 
