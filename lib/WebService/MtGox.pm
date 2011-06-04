@@ -146,6 +146,11 @@ Make it AnyEvent+Coro-friendly
   use WebService::MtGox;
   use LWP::Protocol::Coro::http;
 
+Finally, use the command line client, mg
+
+  mg help
+  mg ticker
+
 =head1 DESCRIPTION
 
 WebService::MtGox gives you access to MtGox's bitcoin trading API.
@@ -225,13 +230,13 @@ L<Catalyst::Model::Bitcoin>,
 L<Finance::Bitcoin>,
 L<Finance::MtGox>
 
+(Had I known about Finance::MtGox, I wouldn't have made this module.)
+
 =head2 Command Line Client
 
 Buy and sell bitcoins on mtgox.com from the command line.
 
 L<mg>
-
-(Had I known about Finance::MtGox, I wouldn't have made this module.)
 
 =head1 AUTHOR
 
