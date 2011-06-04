@@ -151,7 +151,7 @@ my %actions; %actions = (
     } else {
       $btc = $balance->{btcs} + ($balance->{usd} / $rate);
     }
-    printf("\x{0E3F}%.2f\n", $btc);
+    printf("\x{0E3F}%.8f\n", $btc);
   },
 
   help => sub {
