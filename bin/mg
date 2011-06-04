@@ -161,8 +161,8 @@ my %actions; %actions = (
   },
 );
 
-sub view {
-}
+# aliases
+$actions{ls} = $actions{list}
 
 my $command = shift;
 
@@ -234,6 +234,8 @@ Sell some bitcoins.
 =item   --price=NUMBER
 
 =back
+
+=item B<ls>
 
 =item B<list>
 
