@@ -133,7 +133,7 @@ my %actions; %actions = (
       $usd = ($btc * $rate);
     } else {
       $btc = $balance->{btcs};
-      $usd = ($btc * $rate) + $balance->{usd};
+      $usd = ($btc * $rate) + $balance->{usds};
     }
     printf("\$%.2f\n", $usd);
   },
@@ -149,7 +149,7 @@ my %actions; %actions = (
       $usd = shift(@ARGV);
       $btc = ($usd / $rate);
     } else {
-      $btc = $balance->{btcs} + ($balance->{usd} / $rate);
+      $btc = $balance->{btcs} + ($balance->{usds} / $rate);
     }
     printf("\x{0E3F}%.8f\n", $btc);
   },
