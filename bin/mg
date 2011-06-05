@@ -27,7 +27,7 @@ own credentials.
 
 To get started, run:
 
-  $0 help
+  mg help
 
 };
 exit 1;
