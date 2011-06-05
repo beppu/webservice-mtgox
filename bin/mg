@@ -6,6 +6,9 @@ use Ouch;
 use Try::Tiny;
 use Getopt::Long;
 
+# allow us to repurpose the thai baht symbol for bitcoins
+binmode STDOUT, ":utf8";
+
 my $user;
 my $password;
 
