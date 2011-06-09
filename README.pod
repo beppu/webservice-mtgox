@@ -10,13 +10,13 @@ banks react to this new liberatory technology.
 
 =head2 What is MtGox?
 
-"MtGox":https://mtgox.com/ is currently (as of June 2011) the most heavily
+L<MtGox|https://mtgox.com/> is currently (as of June 2011) the most heavily
 traded BitCoin market.  They have been kind enough to provide an API that
 lets you automate your trading.
 
 =head2 Some Sample Code
 
-This is a fairly straight-forward expression of "MtGox's Trading API":https://mtgox.com/support/tradeAPI .
+Using L<MtGox's Trading API|https://mtgox.com/support/tradeAPI> via Perl.
 
   use common::sense;
   use WebService::MtGox;
