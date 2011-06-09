@@ -1,20 +1,22 @@
-use inc::Module::Install;
-name 'WebService-MtGox';
-all_from 'lib/WebService/MtGox.pm';
+use ExtUtils::MakeMaker;
 
-requires 'Moo'                  => 0;
-requires 'Ouch'                 => 0;
-requires 'parent'               => 0; # for Ouch
-requires 'JSON'                 => 0;
-requires 'LWP::UserAgent'       => 0;
-requires 'LWP::Protocol::https' => 0;
-requires 'Try::Tiny'            => 0;
-requires 'Data::Dump'           => 0;
-requires 'Getopt::Long'         => 0;
-
-tests 't/*.t';
-
-install_script 'bin/mg';
-
-test_requires 'Test::More';
-WriteAll;
+WriteMakefile(
+  NAME          => 'WebService::MtGox',
+  AUTHOR        => 'John BEPPU <beppu@cpan.org>',
+  LICENSE       => 'perl',
+  VERSION_FROM  => 'lib/WebService/MtGox.pm',
+  ABSTRACT_FROM => 'lib/WebService/MtGox.pm',
+  EXE_FILES     => ['bin/mg'],
+  PREREQ_PM     => {
+    'Moo'                  => 0,
+    'Ouch'                 => 0,
+    'parent'               => 0,
+    'JSON'                 => 0,
+    'LWP::UserAgent'       => 0,
+    'LWP::Protocol::https' => 0,
+    'Try::Tiny'            => 0,
+    'Data::Dump'           => 0,
+    'Getopt::Long'         => 0,
+    'Test::More'           => 0,
+  }
+);
