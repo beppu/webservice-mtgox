@@ -215,9 +215,6 @@ Type may be C<1> for buy or C<2> for sell.
 
 Use this method to withdraw money from mtgox.
 
-B<NOTICE>:  As of 2011-05-30, this API function has not yet been implemented at
-mtgox.com.
-
 =head1 SEE ALSO
 
 =head2  API Documentation
