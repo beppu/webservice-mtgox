@@ -18,6 +18,7 @@ h2. Some Sample Code
 
 This is a fairly straight-forward expression of "MtGox's Trading API":https://mtgox.com/support/tradeAPI .
 
+bc..
   use common::sense;
   use WebService::MtGox;
 
@@ -32,6 +33,7 @@ This module comes with a command line client called *mg* that lets you
 get market data and initiate trades.  If you're a command line junky,
 you'll find it quite convenient.
 
+bc..
   Usage:
         mg <COMMAND> [OPTION]...
 
