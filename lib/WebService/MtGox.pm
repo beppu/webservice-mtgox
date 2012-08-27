@@ -6,7 +6,7 @@ use JSON;
 use LWP::UserAgent;
 
 our $VERSION  = '0.05';
-our $BASE_URL = 'https://mtgox.com/code';
+our $BASE_URL = 'https://mtgox.com/api/0';
 
 has user     => (is => 'ro');
 has password => (is => 'ro');
